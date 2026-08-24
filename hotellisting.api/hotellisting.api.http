@@ -1,0 +1,44 @@
+@api_HostAddress = http://localhost:5131
+
+###
+GET {{api_HostAddress}}/api/hotels
+Accept: application/json
+
+###
+
+@id=2
+
+###
+
+POST {{api_HostAddress}}/api/hotels
+Content-Type: application/json
+
+{
+    "id": 3,
+    "name": "Grand Plaza",
+    "address": "123 Main St",
+    "rating": 4.5
+}
+
+###
+
+
+DELETE {{api_HostAddress}}/api/hotels/{{id}}
+
+###
+
+GET {{api_HostAddress}}/api/hotels/{{id}}
+
+###
+
+PUT {{api_HostAddress}}/api/hotels/{{id}}
+Content-Type: application/json
+
+{
+    "id": 2,
+    "name": "Test Hotel",
+    "address": "123 Main St",
+    "rating": 4.5
+}
+
+###

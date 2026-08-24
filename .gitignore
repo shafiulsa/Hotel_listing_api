@@ -1,0 +1,82 @@
+## ----------------------------------------------------------------------
+## .NET / ASP.NET Core Production Git Ignore Rules
+## ----------------------------------------------------------------------
+
+# Build & Output Directories
+bin/
+obj/
+out/
+publish/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio / VS Code / IDE Files
+.vs/
+.vscode
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.workspace
+
+# VS Code specific (allow settings/extensions if needed, ignore workspace state)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# User / Environment Secrets & Config Overrides
+appsettings.Local.json
+appsettings.*.Local.json
+*.env
+.env
+.env.*
+secrets.json
+
+# NuGet Packages & Restores
+*.nupkg
+*.snupkg
+*.pfx
+*.p12
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Test Results & Code Coverage
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.coverage
+*.coveragexml
+
+# Database / SQLite / Temp Files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.ldf
+*.mdf
+
+# Logs & Temporary Files
+*.log
+*.tmp
+*.temp
+*.swp
+*~
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
