@@ -44,7 +44,6 @@ public class HotelsController : ControllerBase
         hotels.Add(newHotel);
         return CreatedAtAction(nameof(Get), new { id = newHotel.Id }, newHotel);
     }
-
     // PUT api/<HotelsController>/5
     [HttpPut("{id}")]
     public ActionResult Put(int id, [FromBody]Hotel updatedHotel)

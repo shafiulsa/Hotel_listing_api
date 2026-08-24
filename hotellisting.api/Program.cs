@@ -1,6 +1,15 @@
 
 
+using hotellisting.api.data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// PostgreSQL Connection Setup
+var connectionString = builder.Configuration.GetConnectionString("HotelListingDbConn");
+
+builder.Services.AddDbContext<HotelListingDbContext>(options =>
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
