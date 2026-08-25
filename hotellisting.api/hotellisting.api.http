@@ -1,44 +1,78 @@
 @api_HostAddress = http://localhost:5131
+@countryId = 4
+@hotelId = 2
 
 ###
-GET {{api_HostAddress}}/api/hotels
+# Countries - Get all
+GET {{api_HostAddress}}/api/countries
 Accept: application/json
 
 ###
-
-@id=2
+# Countries - Get by id
+GET {{api_HostAddress}}/api/countries/{{countryId}}
+Accept: application/json
 
 ###
-
-POST {{api_HostAddress}}/api/hotels
+# Countries - Create Bangladesh
+POST {{api_HostAddress}}/api/countries
 Content-Type: application/json
 
 {
     "id": 3,
-    "name": "Grand Plaza",
-    "address": "123 Main St",
-    "rating": 4.5
+  "name": "India",
+  "shortName": "IN"
 }
 
 ###
-
-
-DELETE {{api_HostAddress}}/api/hotels/{{id}}
-
-###
-
-GET {{api_HostAddress}}/api/hotels/{{id}}
-
-###
-
-PUT {{api_HostAddress}}/api/hotels/{{id}}
+# Countries - Update
+PUT {{api_HostAddress}}/api/countries/{{countryId}}
 Content-Type: application/json
 
 {
-    "id": 2,
-    "name": "Test Hotel",
-    "address": "123 Main St",
-    "rating": 4.5
+  "id": {{countryId}},
+  "name": "Nepal",
+  "shortName": "NP"
 }
 
 ###
+# Countries - Delete
+DELETE {{api_HostAddress}}/api/countries/{{countryId}}
+
+###
+# Hotels - Get all
+GET {{api_HostAddress}}/api/hotels
+Accept: application/json
+
+###
+# Hotels - Get by id
+GET {{api_HostAddress}}/api/hotels/{{hotelId}}
+Accept: application/json
+
+###
+# Hotels - Create
+POST {{api_HostAddress}}/api/hotels
+Content-Type: application/json
+
+{
+  "name": "Kacchi dine",
+  "address": "Mirpur 10",
+  "rating": 4.5,
+  "countryId": {{countryId}}
+}
+
+###
+# Hotels - Update
+PUT {{api_HostAddress}}/api/hotels/{{hotelId}}
+Content-Type: application/json
+
+{
+  "id": {{hotelId}},
+  "name": "The Westin Dhaka",
+  "address": "Main Gulshan Avenue, Dhaka",
+  "rating": 4.7,
+  "countryId": {{countryId}}
+}
+
+###
+# Hotels - Delete
+DELETE {{api_HostAddress}}/api/hotels/{{hotelId}}

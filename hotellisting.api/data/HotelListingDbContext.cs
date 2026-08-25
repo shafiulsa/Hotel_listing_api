@@ -16,6 +16,6 @@ namespace hotellisting.api.data
 
         public DbSet<Country> Countries { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
-        public DbSet<hotellisting.api.data.People> People { get; set; } = default!;
+
     }
 }
