@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// PostgreSQL Connection Setup
+// SQL Server Connection Setup
 var connectionString = builder.Configuration.GetConnectionString("HotelListingDbConn");
 
 builder.Services.AddDbContext<HotelListingDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
