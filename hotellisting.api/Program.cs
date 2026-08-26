@@ -2,6 +2,7 @@
 
 using hotellisting.api.Contracts;
 using hotellisting.api.data;
+using hotellisting.api.MappingProfiles;
 using hotellisting.api.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,13 @@ builder.Services.AddDbContext<HotelListingDbContext>(options =>
 
 builder.Services.AddScoped<ICountriesService, CountriesService>();
 builder.Services.AddScoped<IHotelsService, HotelsService>();
+
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<HotelMappingProfiles>();
+    cfg.AddProfile<CountryMappingProfiles>();
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -33,4 +41,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.Run();
 app.Run();

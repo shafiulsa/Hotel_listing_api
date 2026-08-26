@@ -10,6 +10,7 @@ public class HotelsService(HotelListingDbContext context) : IHotelsService
     public async Task<IEnumerable<GetHotelsDto>> GetHotelsAsync()
     {
         return await context.Hotels
+         .Include(q=>q.Country)
             .Select(h => new GetHotelsDto(
                 h.Id,
                 h.Name,
