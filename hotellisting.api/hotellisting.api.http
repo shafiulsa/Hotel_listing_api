@@ -1,6 +1,6 @@
 @api_HostAddress = http://localhost:5131
-@countryId = 1002
-@hotelId = 1002
+@countryId = 1004
+@hotelId = 1004
 
 ###
 # Countries - Get all
@@ -18,9 +18,9 @@ POST {{api_HostAddress}}/api/countries
 Content-Type: application/json
 
 {
-    "id": 13,
-  "name": "Turkey",
-  "shortName": "TR"
+  "id": 13,
+  "name": "China",
+  "shortName": "CH"
 }
 
 ###
@@ -30,8 +30,8 @@ Content-Type: application/json
 
 {
   "id": {{countryId}},
-  "name": "Bhutan",
-  "shortName": "BT"
+  "name": "Maldives",
+  "shortName": "MV"
 }
 
 ###

@@ -2,24 +2,27 @@ using hotellisting.api.Contracts;
 using hotellisting.api.data;
 using hotellisting.api.DTOs.Country;
 using hotellisting.api.DTOs.Hotel;
+using hotellisting.api.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace hotellisting.api.Services;
 
 public class CountriesService(HotelListingDbContext context) : ICountriesService
 {
-    public async Task<IEnumerable<GetCountriesDto>> GetCountriesAsync()
+    public async Task<Result<IEnumerable<GetCountriesDto>>> GetCountriesAsync()
     {
-        return await context.Countries
+        var countries = await context.Countries
             .Select(c => new GetCountriesDto(
                 c.CountryId,
                 c.Name,
                 c.ShortName
             ))
             .ToListAsync();
+
+        return Result<IEnumerable<GetCountriesDto>>.Success(countries);
     }
 
-    public async Task<GetCountryDto?> GetCountryAsync(int id)
+    public async Task<Result<GetCountryDto>> GetCountryAsync(int id)
     {
         var country = await context.Countries
             .Where(q => q.CountryId == id)
@@ -36,62 +39,99 @@ public class CountriesService(HotelListingDbContext context) : ICountriesService
             ))
             .FirstOrDefaultAsync();
 
-        return country;
+        return country is null
+          ? Result<GetCountryDto>.NotFound()
+          : Result<GetCountryDto>.Success(country);
+
     }
 
-    public async Task<GetCountryDto> CreateCountryAsync(CreateCountryDto createDto)
+    public async Task<Result<GetCountryDto>> CreateCountryAsync(CreateCountryDto createDto)
     {
-        // var country = new Country
-        // {
-        //     Name = createDto.Name,
-        //     ShortName = createDto.ShortName
-        // };
 
-        // context.Countries.Add(country);
-        // await context.SaveChangesAsync();
-
-        // return new GetCountryDto(
-        //     country.CountryId,
-        //     country.Name,
-        //     country.ShortName,
-        //     []
-        // );
-        var country = new Country
+        try
         {
-            Name = createDto.Name,
-            ShortName = createDto.ShortName
-        };
+            var exists = await CountryExistsAsync(createDto.Name);
+            if (exists)
+            {
+                return Result<GetCountryDto>.Failure(new Error("Conflict", $"Country with name '{createDto.Name}' already exists."));
+            }
 
-        context.Countries.Add(country);
-        await context.SaveChangesAsync();
+            var country = new Country
+            {
+                Name = createDto.Name,
+                ShortName = createDto.ShortName
+            };
+            context.Countries.Add(country);
+            await context.SaveChangesAsync();
 
-        return new GetCountryDto(
-            country.CountryId,
-            country.Name,
-            country.ShortName,
-            []
-        );
+            var dto = new GetCountryDto(
+                country.CountryId,
+                country.Name,
+                country.ShortName,
+                []
+            );
+
+            return Result<GetCountryDto>.Success(dto);
+        }
+        catch (Exception)
+        {
+            return Result<GetCountryDto>.Failure();
+        }
     }
 
-    public async Task UpdateCountryAsync(int id, UpdateCountryDto updateDto)
+    public async Task<Result> UpdateCountryAsync(int id, UpdateCountryDto updateDto)
     {
-        var country = await context.Countries.FindAsync(id)
-            ?? throw new KeyNotFoundException("Country not found");
+        try
+        {
+            if (id != updateDto.Id)
+            {
+                return Result.BadRequest(new Error("Validation", "Id route value does not match payload Id."));
+            }
 
-        country.Name = updateDto.Name;
-        country.ShortName = updateDto.ShortName;
+            var country = await context.Countries.FindAsync(id);
+            if (country is null)
+            {
+                return Result.NotFound(new Error("NotFound", $"Country '{id}' was not found."));
+            }
 
-        // EF Core change tracker automatically detects modifications
-        await context.SaveChangesAsync();
+            var duplicateName = await CountryExistsAsync(updateDto.Name);
+            if (duplicateName)
+            {
+                return Result.Failure(new Error("Conflict", $"Country with name '{updateDto.Name}' already exists."));
+            }
+
+            country.Name = updateDto.Name;
+            country.ShortName = updateDto.ShortName;
+            context.Countries.Update(country);
+            await context.SaveChangesAsync();
+
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure();
+        }
     }
 
-    public async Task DeleteCountryAsync(int id)
+    public async Task<Result> DeleteCountryAsync(int id)
     {
-        var country = await context.Countries.FindAsync(id)
-            ?? throw new KeyNotFoundException("Country not found");
+        try
+        {
+            var country = await context.Countries.FindAsync(id);
+            if (country is null)
+            {
+                return Result.NotFound(new Error("NotFound", $"Country '{id}' was not found."));
+            }
 
-        context.Countries.Remove(country);
-        await context.SaveChangesAsync();
+            context.Countries.Remove(country);
+            await context.SaveChangesAsync();
+
+            return Result.Success();
+        }
+        catch (Exception)
+        {
+            return Result.Failure();
+        }
     }
 
     public async Task<bool> CountryExistsAsync(int id)

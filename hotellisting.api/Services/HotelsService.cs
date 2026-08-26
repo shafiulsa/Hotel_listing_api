@@ -1,3 +1,5 @@
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using hotellisting.api.Contracts;
 using hotellisting.api.data;
 using hotellisting.api.DTOs.Hotel;
@@ -5,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace hotellisting.api.Services;
 
-public class HotelsService(HotelListingDbContext context) : IHotelsService
+public class HotelsService(HotelListingDbContext context,IMapper mapper) : IHotelsService
 {
     public async Task<IEnumerable<GetHotelsDto>> GetHotelsAsync()
     {
@@ -25,13 +27,15 @@ public class HotelsService(HotelListingDbContext context) : IHotelsService
     {
         var hotel = await context.Hotels
             .Where(q => q.Id == id)
-            .Select(c => new GetHotelDto(
-                c.Id,
-                c.Name,
-                c.Address,
-                c.Rating,
-                c.Country!.Name
-            ))
+            // .Select(c => new GetHotelDto(
+            //     c.Id,
+            //     c.Name,
+            //     c.Address,
+            //     c.Rating,
+            //     c.Country!.Name
+            // ))
+            .Include(q => q.Country)
+            .ProjectTo<GetHotelDto>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync();
 
         return hotel;
@@ -39,13 +43,14 @@ public class HotelsService(HotelListingDbContext context) : IHotelsService
 
     public async Task<GetHotelDto> CreateHotelAsync(CreateHotelDto createDto)
     {
-        var hotel = new Hotel
-        {
-            Name = createDto.Name,
-            Address = createDto.Address,
-            Rating = createDto.Rating,
-            CountryId = createDto.CountryId
-        };
+        // var hotel = new Hotel
+        // {
+        //     Name = createDto.Name,
+        //     Address = createDto.Address,
+        //     Rating = createDto.Rating,
+        //     CountryId = createDto.CountryId
+        // };
+        var hotel = mapper.Map<Hotel>(createDto);
 
         context.Hotels.Add(hotel);
         await context.SaveChangesAsync();
@@ -55,13 +60,14 @@ public class HotelsService(HotelListingDbContext context) : IHotelsService
             .Select(c => c.Name)
             .FirstOrDefaultAsync() ?? string.Empty;
 
-        return new GetHotelDto(
-            hotel.Id,
-            hotel.Name,
-            hotel.Address,
-            hotel.Rating,
-            countryName
-        );
+        // return new GetHotelDto(
+        //     hotel.Id,
+        //     hotel.Name,
+        //     hotel.Address,
+        //     hotel.Rating,
+        //     countryName 
+        // );
+        return mapper.Map<GetHotelDto>(hotel);
     }
 
     public async Task UpdateHotelAsync(int id, UpdateHotelDto updateDto)
