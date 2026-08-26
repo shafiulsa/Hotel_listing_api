@@ -1,6 +1,6 @@
 @api_HostAddress = http://localhost:5131
 @countryId = 1002
-@hotelId = 2
+@hotelId = 1002
 
 ###
 # Countries - Get all
@@ -54,9 +54,9 @@ POST {{api_HostAddress}}/api/hotels
 Content-Type: application/json
 
 {
-  "name": "Kacchi dine",
-  "address": "Mirpur 10",
-  "rating": 4.5,
+  "name": "Ruposhi Bangla Hotel",
+  "address": "Motijheel",
+  "rating": 5,
   "countryId": {{countryId}}
 }
 
@@ -67,9 +67,9 @@ Content-Type: application/json
 
 {
   "id": {{hotelId}},
-  "name": "The Westin Dhaka",
-  "address": "Main Gulshan Avenue, Dhaka",
-  "rating": 4.7,
+  "name": "Radisson Blu Dhaka",
+  "address": "Banani",
+  "rating": 5,
   "countryId": {{countryId}}
 }
 
