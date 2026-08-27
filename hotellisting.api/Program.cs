@@ -36,7 +36,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // For auth related endpoint
-app.MapGroup("api/auth").MapIdentityApi<ApplicationUser>();
+app.MapGroup("api/default-auth").MapIdentityApi<ApplicationUser>();
 
 if (app.Environment.IsDevelopment())
 {
