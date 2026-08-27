@@ -19,8 +19,8 @@ builder.Services.AddScoped<IHotelsService, HotelsService>();
 
 builder.Services.AddAutoMapper(cfg =>
 {
-    cfg.AddProfile<HotelMappingProfiles>();
-    cfg.AddProfile<CountryMappingProfiles>();
+    cfg.AddProfile<HotelMappingProfile>();
+    cfg.AddProfile<CountryMappingProfile>();
 });
 
 builder.Services.AddControllers();

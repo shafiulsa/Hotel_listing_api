@@ -1,6 +1,6 @@
 @api_HostAddress = http://localhost:5131
-@countryId = 1004
-@hotelId = 1004
+@countryId = 2
+@hotelId = 200
 
 ###
 # Countries - Get all
@@ -20,7 +20,7 @@ Content-Type: application/json
 {
   "id": 13,
   "name": "China",
-  "shortName": "CH"
+  "shortName": "SA"
 }
 
 ###
@@ -30,8 +30,8 @@ Content-Type: application/json
 
 {
   "id": {{countryId}},
-  "name": "Maldives",
-  "shortName": "MV"
+  "name": "Mali",
+  "shortName": "SA"
 }
 
 ###
@@ -54,9 +54,9 @@ POST {{api_HostAddress}}/api/hotels
 Content-Type: application/json
 
 {
-  "name": "Ruposhi Bangla Hotel",
-  "address": "Motijheel",
-  "rating": 5,
+  "name": "Testy Treat Hotel",
+  "address": "Banani",
+  "rating": 4,
   "countryId": {{countryId}}
 }
 
@@ -67,10 +67,11 @@ Content-Type: application/json
 
 {
   "id": {{hotelId}},
-  "name": "Radisson Blu Dhaka",
-  "address": "Banani",
-  "rating": 5,
+  "name": "Hazi biriyani resturent 2nd branch ",
+  "address": "New Market",
+  "rating": 4,
   "countryId": {{countryId}}
+ 
 }
 
 ###
