@@ -1,0 +1,10 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+namespace hotellisting.api.data;
+
+public class ApplicationUser : IdentityUser
+{
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+}
