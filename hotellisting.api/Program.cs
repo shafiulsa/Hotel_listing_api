@@ -16,8 +16,9 @@ builder.Services.AddDbContext<HotelListingDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
-    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<HotelListingDbContext>();
+
+builder.Services.AddAuthentication();
 
 builder.Services.AddScoped<ICountriesService, CountriesService>();
 builder.Services.AddScoped<IHotelsService, HotelsService>();
@@ -33,6 +34,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// For auth related endpoint
+app.MapGroup("api/auth").MapIdentityApi<ApplicationUser>();
 
 if (app.Environment.IsDevelopment())
 {
