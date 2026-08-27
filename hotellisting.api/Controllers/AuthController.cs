@@ -1,5 +1,5 @@
 using hotellisting.api.Constants;
-using hotellisting.api.Constants;
+using hotellisting.api.Contracts;
 using hotellisting.api.data;
 using hotellisting.api.DTOs.Auth;
 using hotellisting.api.Results;
@@ -12,45 +12,19 @@ namespace hotellisting.api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [AllowAnonymous]
-public class AuthController(UserManager<ApplicationUser> userManager) : BaseApiController
+public class AuthController(IUsersService usersService) : BaseApiController
 {
-    [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterUserDto registerUserDto)
-    {
-        var user = new ApplicationUser
-        {
-            Email = registerUserDto.Email,
-            FirstName = registerUserDto.FirstName,
-            LastName = registerUserDto.LastName,
-            UserName = registerUserDto.Email
-        };
+[HttpPost("register")]
+public async Task<ActionResult<RegisteredUserDto>> Register(RegisterUserDto registerUserDto)
+{
+    var result = await usersService.RegisterAsync(registerUserDto);
+    return ToActionResult(result);
+}
 
-        var result = await userManager.CreateAsync(user, registerUserDto.Password);
-        if (!result.Succeeded)
-        {
-            var errors = result.Errors.Select(e => new Error(ErrorCodes.BadRequest, e.Description)).ToArray();
-            return MapErrorsToResponse(errors);
-        }
-
-        // Optional: Send confirmation Email
-        return Ok();
-    }
-
-    [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginUserDto loginUserDto)
-    {
-        var user = await userManager.FindByEmailAsync(loginUserDto.Email);
-        if (user == null)
-        {
-            return Unauthorized(new { message = "Invalid Credentials" });
-        }
-
-        var isPasswordValid = await userManager.CheckPasswordAsync(user, loginUserDto.Password);
-        if (!isPasswordValid)
-        {
-            return Unauthorized(new { message = "Invalid Credentials" });
-        }
-
-        return Ok();
-    }
+[HttpPost("login")]
+public async Task<ActionResult<string>> Login(LoginUserDto loginUserDto)
+{
+    var result = await usersService.LoginAsync(loginUserDto);
+    return ToActionResult(result);
+}
 }

@@ -13,14 +13,13 @@ GET {{api_HostAddress}}/api/countries/{{countryId}}
 Accept: application/json
 
 ###
-# Countries - Create Bangladesh
+# Countries - Create
 POST {{api_HostAddress}}/api/countries
 Content-Type: application/json
 
 {
-  "id": 13,
-  "name": "China",
-  "shortName": "SA"
+  "name": "Bangladesh",
+  "shortName": "BD"
 }
 
 ###
@@ -71,9 +70,55 @@ Content-Type: application/json
   "address": "New Market",
   "rating": 4,
   "countryId": {{countryId}}
- 
 }
 
 ###
 # Hotels - Delete
 DELETE {{api_HostAddress}}/api/hotels/{{hotelId}}
+
+###
+# Auth - Register User
+POST {{api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "Password123!",
+  "firstName": "Shafiul",
+  "lastName": "Islam"
+}
+
+
+
+
+
+
+###
+# Auth - Login User
+POST {{api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "Password123!"
+}
+
+###
+# Default Identity Auth - Register
+POST {{api_HostAddress}}/api/default-auth/register
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "Password123!"
+}
+
+###
+# Default Identity Auth - Login
+POST {{api_HostAddress}}/api/default-auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "Password123!"
+}
